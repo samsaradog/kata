@@ -7,7 +7,7 @@ rspec \<filename\>
 	
 This is what we have so far:
 
-FizzBuzz
-Prime Factors
-Roman Numerals
-Money Changer
+FizzBuzz<br>
+Prime Factors<br>
+Roman Numerals<br>
+Money Changer<br>
