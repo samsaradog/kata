@@ -4,7 +4,7 @@ describe "Prime" do
     ( 0 == (amount % factors.pop)) and factors_right(amount, factors)
   end
   
-  LIMIT = 256
+  LIMIT = 999
   
   it "should return 1 for 1" do
     factor(1).should == [1]
@@ -38,6 +38,8 @@ def factor(number)
 end
 
 def sieve(factors)
-  return [] unless factor = factors.shift
-  [factor] + sieve(factors.delete_if { |x| (0 == (x % factor))})
+  return [] unless factors[0]
+  return factors if (Math.sqrt(factors[-1]) > factors[0])
+  current = factors.shift
+  [current] + sieve(factors.delete_if { |x| (0 == (x % current)) })
 end
