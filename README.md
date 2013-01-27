@@ -11,3 +11,15 @@ FizzBuzz<br>
 Prime Factors<br>
 Roman Numerals<br>
 Money Changer<br>
+
+There are also files for FizzBuzz, Roman Numerals and Money Changer written in prolog. These can be run by installing swi-prolog:
+
+    $ brew install swi-prolog
+
+Then starting the prolog repl:
+
+    $ swipl
+
+And from within the repl, loading the file and running the tests in it. For example:
+
+    ?- ['fizzbuzz'],run_tests.

@@ -6,64 +6,64 @@ HIGH_RANGE  = (TOTAL..(TOTAL+5))
 LOW_RANGE   = (-5..0)
 
 describe "Changer" do
-  
+
   def combine change
     change.inject(:+)
   end
-  
+
   def only_coins change
     (change - COINS).empty?
   end
-  
+
   def block_test_each(range, &block) #block parameter has to go last
     range.each do |amount|
       block.call(changer(amount), amount)
     end
   end
-  
+
   def yield_test_each(range)
     range.each do |amount|
       yield(changer(amount),amount)
     end
   end
-  
+
   def test_each(code,range) #extra parameters go at the end
     range.each do |amount|
       code.call(changer(amount), amount)
     end
   end
-  
+
   context "valid input" do
-    
+
     it "should have change and amount add to a dollar" do
-      
+
       #first with method
-      
+
       def check_total(change,amount)
         combine(change).should == (TOTAL-amount)
       end
-      
+
       test_each(method(:check_total),VALID_RANGE)
-      
+
       #next with a lambda
-      
+
       check_total = (lambda { |change,amount| combine(change).should == (TOTAL-amount)})
-      
+
       test_each(check_total,VALID_RANGE)
-      
+
       #next with a Proc
-      
+
       check_total = Proc.new do |change,amount|
         combine(change).should == (TOTAL-amount)
       end
-      
+
       test_each(check_total,VALID_RANGE)
 
       #last with a block - notice that the extra variable comes before the block
-      
+
       block_test_each VALID_RANGE do |change, amount|
-         combine(change).should == (TOTAL-amount)
-       end
+        combine(change).should == (TOTAL-amount)
+      end
     end
 
     it "should give change in quarters, dimes, nickels and pennies" do
@@ -76,18 +76,18 @@ describe "Changer" do
       # end
     end
   end
-  
+
   context "bad input" do
-    
+
     it "give back everything for amounts >= a dollar" do
-      
+
       check_high = (lambda do |change,amount|
         combine(change).should == amount
         change.size.should == 1
       end)
-      
+
       test_each(check_high,HIGH_RANGE)
-      
+
       block_test_each HIGH_RANGE do |change,amount|
         combine(change).should == amount
         change.size.should == 1
@@ -100,18 +100,18 @@ describe "Changer" do
     end
 
     it "should give an error for an amount <= zero" do
-      
+
       check_low = (lambda {true})
-      
+
       lambda {test_each(check_low,LOW_RANGE)}.should raise_error(RuntimeError)
-      
+
       LOW_RANGE.each do |x|
         lambda {changer(x)}.should raise_error(RuntimeError)
       end
 
     end
   end
-  
+
 end
 
 def changer amount

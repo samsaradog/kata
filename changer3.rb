@@ -51,8 +51,9 @@ def changer amount
   returned = (DOLLAR - amount)
   result = []
   
-  COIN_LIMITS.each_key do |x|
-    returned -= ( (returned/x).times { result.push(x) }) * x
+  COIN_LIMITS.each_key do | coin_amount |
+    factor = (returned/coin_amount).times { result.push(coin_amount) }
+    returned -= factor * coin_amount
   end
   result
 end
